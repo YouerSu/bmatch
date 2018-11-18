@@ -33,11 +33,13 @@ fun main(args: Array<String>) {
             You can:
             |Match statement :ps
             |Match type :pt
+            |Create bnf :cb
             |Return :q
         """.trimIndent())
         when(readLine()){
             ":ps" -> parser(statement)
             ":pt" -> parser(type)
+            ":cb" -> TODO()
             ":q" -> return
             else -> println("Unable to recognize command")
         }
