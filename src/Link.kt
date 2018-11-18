@@ -1,18 +1,14 @@
 class Link(var type: Type,val next: Link?): Type(){
 
-    override fun getIndex(str: String): Int {
-        return type.getIndex(str)+next?.type!!.getIndex(str)
-    }
+    override fun getIndex(str: String): Int = type.getIndex(str)+next?.type!!.getIndex(type.split(str))
 
     override fun parser(str: String): Boolean{
         if (!type.parser(str)) return false
         if (next == null) return true
-        return next.parser(type.split(delIgnore(str)))
+        return next.parser(type.split(str))
     }
 
-    override fun toString(): String {
-        return type.toString()+ (next?.toString() ?: "")
-    }
+    override fun toString(): String = type.toString()+ (next?.toString() ?: "")
 
     companion object {
         fun link(vararg type: Type):Link{

@@ -2,7 +2,7 @@ class Condition(vararg var types: Type): Type(){
 
     override fun getIndex(str: String): Int {
         for (type in types){
-            val index = type.getIndex(delIgnore(str))
+            val index = type.getIndex(str)
             if (index>0) return index
         }
         return 0

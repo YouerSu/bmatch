@@ -39,10 +39,27 @@ fun main(args: Array<String>) {
         when(readLine()){
             ":ps" -> parser(statement)
             ":pt" -> parser(type)
-            ":cb" -> TODO()
+            ":cb" -> parser()
             ":q" -> return
             else -> println("Unable to recognize command")
         }
+    }
+}
+
+fun parser() {
+    fun parser(str: String): String{
+        for (type in type.values)
+            when{
+                str.isEmpty() -> return ""
+                type.parser(str) -> return "$type${parser(type.split(str))}"
+            }
+        val fail = Special(Type.delIgnore(str).first().toString())
+        return "$fail${parser(fail.split(str))}"
+    }
+    while (true){
+        val str = readLine()+""
+        if (str==":q") return
+        println(parser(str))
     }
 }
 
