@@ -8,9 +8,9 @@ class Condition(vararg var types: Type): Type(){
         return 0
     }
 
-    override fun parser(str: String): Boolean {
+    override fun parse(str: String): Boolean {
         for (type in types)
-            if (type.parser(delIgnore(str)))
+            if (type.parse(delIgnore(str)))
                 return true
         return false
     }

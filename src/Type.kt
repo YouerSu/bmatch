@@ -2,7 +2,7 @@ import kotlin.Int
 
 abstract class Type {
     abstract fun getIndex(str: String): Int
-    abstract fun parser(str: String): Boolean
+    abstract fun parse(str: String): Boolean
 
     companion object {
         fun delIgnore(str: String): String{

@@ -51,7 +51,7 @@ fun parser() {
         for (type in type.values)
             when{
                 str.isEmpty() -> return ""
-                type.parser(str) -> return "$type${parser(type.split(str))}"
+                type.parse(str) -> return "$type${parser(type.split(str))}"
             }
         val fail = Special(Type.delIgnore(str).first().toString())
         return "$fail${parser(fail.split(str))}"
@@ -70,7 +70,7 @@ fun<K> parser(array: Map<K,Type>) {
         if (str==":q") return
         var success = false
         array.forEach {
-            if (it.value.parser(str)){
+            if (it.value.parse(str)){
                 println("<${it.key}>::=${it.value}")
                 success = true
             }

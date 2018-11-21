@@ -7,7 +7,7 @@ class Cycle(val type: Type, private val ignore: Boolean = true): Type(){
         return index+getIndex(type.split(string))
     }
 
-    override fun parser(str: String): Boolean = type.parser(str)||ignore
+    override fun parse(str: String): Boolean = type.parse(str)||ignore
     override fun toString(): String = if (ignore) "{$type}" else "$type{$type}"
     companion object {
         fun ignore(type: Type) = Cycle(type)
