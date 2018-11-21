@@ -20,8 +20,8 @@ val type = mapOf(
         Pair(TypeName.String,Cycle.notIgnore(atom(TypeName.Letter)))
 )
 
-fun atom(key: TypeName): Type = atom[key] as Type
-fun type(key: TypeName): Type = type[key] as Type
+fun atom(key: TypeName): AbsType = atom[key] as AbsType
+fun type(key: TypeName): AbsType = type[key] as AbsType
 
 val statement = mapOf(
         Pair(Statement.ID,Link.link(type(TypeName.String),atom(TypeName.Minus),type(TypeName.Int)))
@@ -53,7 +53,7 @@ fun parser() {
                 str.isEmpty() -> return ""
                 type.parse(str) -> return "$type${parser(type.split(str))}"
             }
-        val fail = Special(Type.delIgnore(str).first().toString())
+        val fail = Special(AbsType.delIgnore(str).first().toString())
         return "$fail${parser(fail.split(str))}"
     }
     while (true){
@@ -63,7 +63,7 @@ fun parser() {
     }
 }
 
-fun<K> parser(array: Map<K,Type>) {
+fun<K> parser(array: Map<K,AbsType>) {
     println("input values")
     while (true){
         val str = readLine()+""
