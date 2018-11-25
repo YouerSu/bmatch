@@ -75,6 +75,6 @@ fun<K> parser(array: Map<K,AbsType>) {
                 success = true
             }
         }
-        if (success.not()) println("Your input are illegal")
+        if (success.not()) println("Can't Match")
     }
 }
