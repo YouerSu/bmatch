@@ -28,23 +28,34 @@ class Optional(val type: AbsType): AbsType(){
     override fun toString(): String = "[$type]"
 }
 
-class Link(var type: AbsType, val next: Link?): AbsType(){
-    override fun getIndex(str: String): Int = type.getIndex(str)+next?.type!!.getIndex(type.split(str))
+abstract class AbsLink:AbsType(){
+    abstract var type: AbsType
+    abstract var next: AbsLink
+    class End: AbsLink(){
+        override lateinit var type: AbsType
+        override lateinit var next: AbsLink
 
-    override fun parse(str: String): Boolean{
-        if (!type.parse(str)) return false
-        if (next == null) return true
-        return next.parse(type.split(str))
+        override fun getIndex(str: String): Int = 0
+        override fun parse(str: String): Boolean = true
+        override fun toString(): String = ""
     }
-    override fun toString(): String = type.toString()+ (next?.toString() ?: "")
+}
+
+class Link(override var type: AbsType, override var next: AbsLink) : AbsLink() {
+
+    override fun getIndex(str: String): Int = type.getIndex(str)+next.type.getIndex(type.split(str))
+
+    override fun parse(str: String): Boolean = if (!type.parse(str)) false else next.parse(type.split(str))
+
+    override fun toString(): String = type.toString()+ next.toString()
 
     companion object {
-        fun link(vararg type: AbsType):Link{
-            fun fac(array: Array<AbsType>):Link? {
-                if (array.isEmpty()) return null
+        fun link(vararg type: AbsType):AbsLink{
+            fun fac(array: Array<AbsType>):AbsLink {
+                if (array.isEmpty()) return End()
                 return Link(array.first(),fac(array.drop(1).toTypedArray()))
             }
-            return fac(type.toList().toTypedArray()) as Link
+            return fac(type.toList().toTypedArray())
         }
     }
 }
@@ -72,13 +83,12 @@ class Condition(vararg var types: AbsType): AbsType(){
     }
 }
 
-class Cycle(val type: AbsType, private val ignore: Boolean = true): AbsType(){
+class Cycle(private val type: AbsType, private val ignore: Boolean = true): AbsType(){
 
     override fun getIndex(str: String): Int {
         val string = delIgnore(str)
         val index = type.getIndex(string)
-        if (index==0) return 0
-        return index+getIndex(type.split(string))
+        return if (index==0) 0 else index+getIndex(type.split(string))
     }
 
     override fun parse(str: String): Boolean = type.parse(str)||ignore
