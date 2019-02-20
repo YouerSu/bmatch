@@ -46,10 +46,30 @@ class Test {
     }
 
     @Test
+    fun cycle(){
+        with(Cycle(Optional(Digital()))){
+            parse("0123456789").shouldBe(true)
+            parse(" ").shouldBe(true)
+            split("233").shouldBe("")
+        }
+    }
+
+    @Test
     fun link() {
         with(Link.link(Special("-"), Digital(), Cycle(LowLetter()))) {
             parse("-3asdaa").shouldBe(true)
             split("-1qwertyuiopasdfghjklzxcvbnmYouYax").shouldBe("YouYax")
         }
     }
+
+    @Test
+    fun condition(){
+        with(Condition(Link.link(Cycle(LowLetter())),Digital())){
+            parse("0").shouldBe(true)
+            parse("youyax").shouldBe(true)
+            split("0youyax").shouldBe("youyax")
+            split("youyax0").shouldBe("0")
+        }
+    }
+
 }
