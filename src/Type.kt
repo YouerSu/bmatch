@@ -43,7 +43,7 @@ abstract class AbsLink:AbsType(){
 
 class Link(override var type: AbsType, override var next: AbsLink) : AbsLink() {
 
-    override fun getIndex(str: String): Int = type.getIndex(str)+next.type.getIndex(type.split(str))
+    override fun getIndex(str: String): Int = type.getIndex(str)+next.getIndex(type.split(str))
 
     override fun parse(str: String): Boolean = if (!type.parse(str)) false else next.parse(type.split(str))
 
