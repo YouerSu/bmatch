@@ -16,13 +16,13 @@ class LowLetter :AbsType(){
     override fun toString(): String = "<LowLetter>"
 }
 
-class Special(val sign: String): AbsType(){
+class Special(private val sign: String): AbsType(){
     override fun getIndex(str: String): Int = if (parse(delIgnore(str))) sign.length else 0
     override fun parse(str: String): Boolean = str.length>=sign.length&&sign == str.substring(0,sign.length)
     override fun toString(): String = "<Special>"
 }
 
-class Optional(val type: AbsType): AbsType(){
+class Optional(private val type: AbsType): AbsType(){
     override fun getIndex(str: String): Int = type.getIndex(str)
     override fun parse(str: String): Boolean =true
     override fun toString(): String = "[$type]"
@@ -60,7 +60,7 @@ class Link(override var type: AbsType, override var next: AbsLink) : AbsLink() {
     }
 }
 
-class Condition(vararg var types: AbsType): AbsType(){
+class Condition(private vararg var types: AbsType): AbsType(){
     override fun getIndex(str: String): Int {
         for (type in types){
             val index = type.getIndex(str)
@@ -94,7 +94,6 @@ class Cycle(private val type: AbsType, private val ignore: Boolean = true): AbsT
     override fun parse(str: String): Boolean = type.parse(str)||ignore
     override fun toString(): String = if (ignore) "{$type}" else "$type{$type}"
     companion object {
-        fun ignore(type: AbsType) = Cycle(type)
         fun notIgnore(type: AbsType) = Cycle(type,false)
     }
 }

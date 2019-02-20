@@ -2,9 +2,7 @@ import org.junit.Test
 
 class Test {
 
-    constructor()
-
-    fun <T>T.shouldBe(result: T): Unit {
+    private fun <T>T.shouldBe(result: T) {
         if (result != this) error("Error:result is $result,but receive is $this")
     }
 
